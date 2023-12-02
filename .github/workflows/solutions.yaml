@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 0
       - name: Run Solution
         timeout-minutes: 2
-        uses: docker://silex/emacs:28-ci
+        uses: docker://silex/emacs:29-ci
         with:
           entrypoint: bash
           args: -c "./test.sh ${{ matrix.solution }}"
