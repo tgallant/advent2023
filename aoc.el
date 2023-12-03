@@ -96,5 +96,15 @@ operator."
            (test-name (intern (string-join `(,name ,fn-name ,fn-input) "-"))))
       (eval `(ert-deftest ,test-name ()
          (should (equal ,fn ,val))) t)))
-  (mapc 'make-test forms)
+  (mapc 'make-test forms))
+
+(defun make-test-name (fn in)
+  (intern (string-join (list (symbol-name fn) "-" (symbol-name in) "-test"))))
+
+(defmacro defcheck (fn in expected)
+  (let ((test-name (make-test-name fn in)))
+    `(ert-deftest ,test-name ()
+       (should (equal (funcall (quote ,fn) (read-lines ,in t)) ,expected)))))
+
+(defun solve (name)
   (ert name))

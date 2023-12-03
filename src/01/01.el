@@ -62,20 +62,25 @@
 (defun split (str)
   (split-string str "" t))
 
-(defsolution part1
-  (mapcar 'split)
-  (mapcar 'collect-numbers)
-  (mapcar 'determine-calibration)
-  (sum))
+(defun 2023-01-part1 (input)
+  (->> (mapcar 'split input)
+       (mapcar 'collect-numbers)
+       (mapcar 'determine-calibration)
+       (apply '+)))
 
-(defsolution part2
-  (mapcar 'split)
-  (mapcar 'collect-numbers-v2)
-  (mapcar 'determine-calibration)
-  (sum))
+(defun 2023-01-part2 (input)
+  (->> (mapcar 'split input)
+       (mapcar 'collect-numbers-v2)
+       (mapcar 'determine-calibration)
+       (apply '+)))
 
-(defsolve "2023-01"
-  ((part1 "01.test.txt") 142)
-  ((part1 "01.input.txt") 54927)
-  ((part2 "01.test.pt2.txt") 281)
-  ((part2 "01.input.txt") 54581))
+(defconst testfile (expand-file-name "01.test.txt"))
+(defconst inputfile (expand-file-name "01.input.txt"))
+(defconst testfile-pt2 (expand-file-name "01.test.pt2.txt"))
+
+(defcheck 2023-01-part1 testfile 142)
+(defcheck 2023-01-part1 inputfile 54927)
+(defcheck 2023-01-part2 testfile-pt2 281)
+(defcheck 2023-01-part2 inputfile 54581)
+
+(solve "2023-01")
