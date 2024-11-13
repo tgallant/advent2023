@@ -1,6 +1,6 @@
 ;; https://adventofcode.com/2023/day/3
 
-(require 'aoc)
+(require 'aoc2023)
 
 (defconst digits '("0" "1" "2" "3" "4" "5" "6" "7" "8" "9"))
 
@@ -130,8 +130,8 @@
   (->> (mapcar 'split input)
        (collect-gear-ratios)))
 
-(defconst testfile (expand-file-name "03.test.txt"))
-(defconst inputfile (expand-file-name "03.input.txt"))
+(defconst testfile (expand-file-name "input/03.test.txt"))
+(defconst inputfile (expand-file-name "input/03.input.txt"))
 
 (defcheck 2023-03-part1 testfile 4361)
 (defcheck 2023-03-part1 inputfile 539433)

@@ -1,6 +1,6 @@
 ;; https://adventofcode.com/2023/day/1
 
-(require 'aoc)
+(require 'aoc2023)
 
 (defun join-first-and-last-num (lst)
   (->> (list (number-to-string (car lst))
@@ -74,9 +74,9 @@
        (mapcar 'determine-calibration)
        (apply '+)))
 
-(defconst testfile (expand-file-name "01.test.txt"))
-(defconst inputfile (expand-file-name "01.input.txt"))
-(defconst testfile-pt2 (expand-file-name "01.test.pt2.txt"))
+(defconst testfile (expand-file-name "input/01.test.txt"))
+(defconst inputfile (expand-file-name "input/01.input.txt"))
+(defconst testfile-pt2 (expand-file-name "input/01.test.pt2.txt"))
 
 (defcheck 2023-01-part1 testfile 142)
 (defcheck 2023-01-part1 inputfile 54927)

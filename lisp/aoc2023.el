@@ -4,7 +4,7 @@
 (require 'ert)
 (require 'subr-x)
 
-(provide 'aoc)
+(provide 'aoc2023)
 
 ;;; Arrow functions are copied from the following blog post which reimplemented
 ;;; the cl-arrows functionality in elisp.

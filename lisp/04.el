@@ -1,6 +1,6 @@
-;; https://adventofcode.com/2023/day/2
+;; https://adventofcode.com/2023/day/4
 
-(require 'aoc)
+(require 'aoc2023)
 
 (defun parse-game (parts)
   (cl-destructuring-bind (game moves) parts
@@ -49,42 +49,15 @@
   (cl-destructuring-bind (game . possible) cur
     (if possible (append acc (list game)) acc)))
 
-(defun 2023-02-part1 (input)
+(defun 2023-04-part1 (input)
   (-<>> (mapcar 'make-game input)
         (mapcar 'determine-possibility)
         (cl-reduce 'collect-possible-games <> :initial-value '())
         (apply '+)))
 
-(defun check-minimum (acc cur)
-  (cl-destructuring-bind (color . count) cur
-    (cond ((eq nil (plist-get acc color))
-           (plist-put acc color count))
-          ((> count (plist-get acc color))
-           (plist-put acc color count))
-          (t acc))))
+(defconst testfile (expand-file-name "input/04.test.txt"))
+;; (defconst inputfile (expand-file-name "04.input.txt"))
 
-(defun update-minimum (acc cur)
-  (cl-reduce 'check-minimum cur :initial-value acc))
+(defcheck 2023-04-part1 testfile 13)
 
-(defun determine-minimums (game)
-  (cl-destructuring-bind (id moves) game
-    (cl-reduce 'update-minimum moves :initial-value '())))
-
-(defun collect-power-score (minimums)
-  (cl-reduce '* (cl-remove-if-not 'numberp minimums)))
-
-(defun 2023-02-part2 (input)
-  (-<>> (mapcar 'make-game input)
-        (mapcar 'determine-minimums)
-        (mapcar 'collect-power-score)
-        (apply '+)))
-
-(defconst testfile (expand-file-name "02.test.txt"))
-(defconst inputfile (expand-file-name "02.input.txt"))
-
-(defcheck 2023-02-part1 testfile 8)
-(defcheck 2023-02-part1 inputfile 2476)
-(defcheck 2023-02-part2 testfile 2286)
-(defcheck 2023-02-part2 inputfile 54911)
-
-(solve "2023-02")
+(solve "2023-04")
