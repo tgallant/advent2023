@@ -19,7 +19,7 @@ jobs:
       - name: Collect Solutions
         id: collect
         run: |
-          SOLUTIONS=$(python -c 'import os, json; print(json.dumps(sorted(os.listdir("./src"))))')
+          SOLUTIONS=$(ls lisp -I aoc* -I input | jq -R . | jq -s)
           echo solutions=${SOLUTIONS} >> $GITHUB_OUTPUT
   solution:
     runs-on: ubuntu-latest
