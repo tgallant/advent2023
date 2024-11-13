@@ -2,62 +2,42 @@
 
 (require 'aoc2023)
 
-(defun parse-game (parts)
-  (cl-destructuring-bind (game moves) parts
-    (-<>> (string-split game " " t)
-          (nth 1)
-          (string-to-number)
-          (list <> moves))))
+(defun parse-numbers (str)
+  (string-split str " " t))
 
-(defun parse-pick (str)
-  (-<> (string-split str " " t)
-       (cl-destructuring-bind (count color) <>
-         (cons (intern color) (string-to-number count)))))
+(defun parse-card (parts)
+  (list
+   (parse-numbers (nth 0 parts))
+   (parse-numbers (nth 1 parts))))
 
-(defun parse-move (str)
-  (->> (string-split str ", " t)
-       (mapcar 'parse-pick)))
+(defun make-card (str)
+  (-<>> (string-split str ": " t)
+        (nth 1)
+        (string-split <> " | " t)
+        (parse-card)))
 
-(defun parse-moves (parts)
-  (cl-destructuring-bind (game moves) parts
-    (->> (string-split moves "; " t)
-         (mapcar 'parse-move)
-         (list game))))
+(defun determine-winnings (card)
+  (defun collect-winnings (acc cur)
+    (let ((win (member cur (nth 0 card))))
+      (if win (append acc (list cur))
+        acc)))
+  (cl-reduce 'collect-winnings (nth 1 card) :initial-value '()))
 
-(defun make-game (str)
-  (->> (string-split str ": " t)
-       (parse-game)
-       (parse-moves)))
-
-(defconst color-mapping '(red 12 green 13 blue 14))
-
-(defun truep (val)
-  (eq t val))
-
-(defun check-color (color)
-  (cl-destructuring-bind (val . count) color
-    (<= count (plist-get color-mapping val))))
-
-(defun check-move (move)
-  (cl-every 'truep (mapcar 'check-color move)))
-
-(defun determine-possibility (game)
-  (cl-destructuring-bind (id moves) game
-    (cons id (cl-every 'truep (mapcar 'check-move moves)))))
-
-(defun collect-possible-games (acc cur)
-  (cl-destructuring-bind (game . possible) cur
-    (if possible (append acc (list game)) acc)))
+(defun score-winnings (winnings)
+  (let ((len (length winnings)))
+    (cond ((eq 0 (length winnings)) 0)
+          (t (expt 2 (- len 1))))))
 
 (defun 2023-04-part1 (input)
-  (-<>> (mapcar 'make-game input)
-        (mapcar 'determine-possibility)
-        (cl-reduce 'collect-possible-games <> :initial-value '())
+  (-<>> (mapcar 'make-card input)
+        (mapcar 'determine-winnings)
+        (mapcar 'score-winnings)
         (apply '+)))
 
 (defconst testfile (expand-file-name "input/04.test.txt"))
-;; (defconst inputfile (expand-file-name "04.input.txt"))
+(defconst inputfile (expand-file-name "input/04.input.txt"))
 
 (defcheck 2023-04-part1 testfile 13)
+(defcheck 2023-04-part1 inputfile 18653)
 
 (solve "2023-04")
